@@ -15,3 +15,15 @@ removal_type = 'public' # One of ‘public’, ‘private’, ‘private_exposed
 upvote_threshold_message = 'Nice.' # message sent as upvote threshold is read
 
 database_name = 'rareinsults.db'
+
+remove_preset1 = ""
+remove_preset2 = ""
+remove_preset3 = ""
+
+comment_preset1 = ""
+comment_preset2 = ""
+comment_preset3 = ""
+
+lock_preset1 = ""
+lock_preset2 = ""
+lock_preset3 = ""

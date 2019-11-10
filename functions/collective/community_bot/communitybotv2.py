@@ -175,21 +175,6 @@ class bot():
 			pass
 
 
-	# parses comment for ~!lock~ command 
-	def lock_parse(self, body, cm_id, sm_id):
-		reason = body[6:]
-		self.remove_cm(cm_id)
-		self.sm_lock(sm_id)
-		self.comment_comm(sm_id, reason)
-
-
-	# parses comment for ~!comment~ command
-	def comment_parse(self, body, cm_id, sm_id):
-		reason = body[9:]
-		self.remove_cm(cm_id)
-		self.comment_comm(sm_id, reason)
-
-
 	# removes stickied comment from db
 	def rem_sticky(self, submission_id):
 		try:
@@ -205,9 +190,45 @@ class bot():
 			pass
 
 
+	# parses comment for ~!lock~ command 
+	def lock_parse(self, body, cm_id, sm_id):
+		reason = body[6:]
+		if reason[:7].lower() == 'preset1':
+			reason = config.lock_preset1
+		elif reason[:7].lower() == 'preset2':
+			reason = config.lock_preset2
+		elif reason[:7].lower() == 'preset3':
+			reason = config.lock_preset3
+
+		self.remove_cm(cm_id)
+		self.sm_lock(sm_id)
+		self.comment_comm(sm_id, reason)
+
+
+	# parses comment for ~!comment~ command
+	def comment_parse(self, body, cm_id, sm_id):
+		reason = body[9:]
+		if reason[:7].lower() == 'preset1':
+			reason = config.comment_preset1
+		elif reason[:7].lower() == 'preset2':
+			reason = config.comment_preset2
+		elif reason[:7].lower() == 'preset3':
+			reason = config.comment_preset3
+
+		self.remove_cm(cm_id)
+		self.comment_comm(sm_id, reason)
+
+
 	# parses comment for ~!remove~ command
 	def remove_parse(self, body, cm_id, sm_id):
 		reason = body[8:]
+		if reason[:7].lower() == 'preset1':
+			reason = config.remove_preset1
+		elif reason[:7].lower() == 'preset2':
+			reason = config.remove_preset2
+		elif reason[:7].lower() == 'preset3':
+			reason = config.remove_preset3
+
 		self.remove_cm(cm_id)
 		self.sm_remove(sm_id, reason)
 		self.rem_sticky(sm_id)
