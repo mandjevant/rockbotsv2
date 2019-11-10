@@ -538,7 +538,7 @@ class bot:
 									except Exception as e:
 										print(e)
 
-								self.update_in_db(str(bot_cm.id), votes)
+								self.update_in_db(str(bot_cm), votes)
 
 								insane = sum(value == 'insane' for value in votes.values())
 								notinsane = sum(value == 'not insane' for value in votes.values())
