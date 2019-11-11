@@ -1,5 +1,5 @@
 praw==6.3.1
 Wikipedia-API==0.5.1
-nltk==3.4
+nltk==3.4.5
 prawcore==1.0.1
 networkx==2.1
