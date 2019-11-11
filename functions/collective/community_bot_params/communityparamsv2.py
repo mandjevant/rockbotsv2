@@ -485,91 +485,125 @@ class bot:
 
 				for comment in self.subreddit.stream.comments(skip_existing=True):
 					if comment.body[:8] == '!disable':
-						if comment.author.name in mod_team:
-							self.remove_from_db(comment.parent_id[3:])
-							self.delete_own_comment(comment.parent_id[3:])
-						else:
+						try:
+							if comment.author.name in mod_team:
+								self.remove_from_db(comment.parent_id[3:])
+								self.delete_own_comment(comment.parent_id[3:])
+							else:
+								pass
+						except Exception as e:
+							print(e)
 							pass
+
 					elif comment.body[:12] == '!explanation':
-						if comment.author.name == comment.submission.author.name:
-							sm = comment.submission
-							sm.comment_sort = 'new'
-							cms = sm.comments.list()
-							
-							bot_cm = False
-							for cm in cms:
-								if cm.author.name == config.username:
-									bot_cm = cm.id
-									break
-								else:
-									continue
-
-							if bot_cm != False:
-								self.update_explan_db(comment.permalink, bot_cm)
+						try:
+							if comment.author.name == comment.submission.author.name:
+								sm = comment.submission
+								sm.comment_sort = 'new'
+								cms = sm.comments.list()
 								
-								cursor = self.db_conn.cursor().execute("SELECT * FROM COMMENTS WHERE COMMENTS.COMMENT_ID='%s'" %str(bot_cm))
-								i = cursor.fetchone()
-								votes = cPickle.loads(i[1])
-								comment = self.reddit.comment(str(i[0]))
-								explan = i[3]
-
-								comment.reply_sort = 'new'
-								comment = comment.refresh()
-								replies = comment.replies
-
-								for reply in replies:
+								bot_cm = False
+								for cm in cms:
 									try:
-										if reply.parent().author.name == config.username:
-											if reply.author.name not in votes.keys():
-												legit = self.legit_vote(reply.body)
-												if legit != None:
-													try:
-														votes.update({reply.author.name:legit})
-														reply.upvote()
-														self.remove_comment(reply)
-													except Exception as e:
-														print(e)
+										if cm.author.name == config.username:
+											bot_cm = cm.id
+											break
+										else:
+											continue
+									except Exception as e:
+										print(e)
+										pass
+
+								if bot_cm != False:
+									self.update_explan_db(comment.permalink, bot_cm)
+									
+									cursor = self.db_conn.cursor().execute("SELECT * FROM COMMENTS WHERE COMMENTS.COMMENT_ID='%s'" %str(bot_cm))
+									i = cursor.fetchone()
+									votes = cPickle.loads(i[1])
+									comment = self.reddit.comment(str(i[0]))
+									explan = i[3]
+
+									comment.reply_sort = 'new'
+									comment = comment.refresh()
+									replies = comment.replies
+
+									for reply in replies:
+										try:
+											if reply.parent().author.name == config.username:
+												if reply.author.name not in votes.keys():
+													legit = self.legit_vote(reply.body)
+													if legit != None:
+														try:
+															votes.update({reply.author.name:legit})
+															reply.upvote()
+															self.remove_comment(reply)
+														except Exception as e:
+															print(e)
+													else:
+														pass
 												else:
 													pass
 											else:
 												pass
-										else:
-											pass
-									except Exception as e:
-										print(e)
+										except Exception as e:
+											print(e)
 
-								self.update_in_db(str(bot_cm), votes)
+									self.update_in_db(str(bot_cm), votes)
 
-								insane = sum(value == 'insane' for value in votes.values())
-								notinsane = sum(value == 'not insane' for value in votes.values())
-								fake = sum(value == 'fake' for value in votes.values())
+									insane = sum(value == 'insane' for value in votes.values())
+									notinsane = sum(value == 'not insane' for value in votes.values())
+									fake = sum(value == 'fake' for value in votes.values())
 
-								self.update_comment(str(comment.id), str(insane), str(notinsane), str(fake), str(explan))
+									self.update_comment(str(comment.id), str(insane), str(notinsane), str(fake), str(explan))
+								else:
+									comment.reply('Could not sticky explanation. Apologies for the inconvenience.' + config.footer)
+
 							else:
-								comment.reply('Could not sticky explanation. Apologies for the inconvenience.' + config.footer)
+								pass
+						except Exception as e:
+							print(e)
+							pass
 
-						else:
-							pass
 					elif comment.body[:5] == '!lock':
-						if comment.author.name in mod_team:
-							self.lock_parse(comment.body, comment.id, comment.submission.id)
-						else:
+						try:
+							if comment.author.name in mod_team:
+								self.lock_parse(comment.body, comment.id, comment.submission.id)
+							else:
+								pass
+						except Exception as e:
+							print(e)
 							pass
+
 					elif comment.body[:8] == '!comment':
-						if comment.author.name in mod_team:
-							self.comment_parse(comment.body, comment.id, comment.submission.id)
-						else:
+						try:
+							if comment.author.name in mod_team:
+								self.comment_parse(comment.body, comment.id, comment.submission.id)
+							else:
+								pass
+						except Exception as e:
+							print(e)
 							pass
+
 					elif comment.body[:7] == '!remove':
-						if comment.author.name in mod_team:
-							self.remove_parse(comment.body, comment.id, comment.submission.id)
-						else:
+						try:
+							if comment.author.name in mod_team:
+								self.remove_parse(comment.body, comment.id, comment.submission.id)
+							else:
+								pass
+						except Exception as e:
+							print(e)
 							pass
+
 					elif comment.body[:8] == '!hotline':
-						if comment.author.name in mod_team:
-							self.hotline_parse(comment.body, comment.id, comment.submission.id)
-					else:
-						pass
+						try:
+							if comment.author.name in mod_team:
+								self.hotline_parse(comment.body, comment.id, comment.submission.id)
+							else:
+								pass
+						except Exception as e:
+							print(e)
+							pass
+
 
 			except InvalidToken:
 				print("Encountered Invalid Token error, resetting PRAW")
