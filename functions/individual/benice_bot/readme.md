@@ -6,7 +6,7 @@ NOTE: **This bot requires customization**
 
 ## Setup and run
 
-1. `cd functions/individual/BeNiceBot/`
+1. `cd functions/individual/benice_bot/`
 2. `virtualenv env`
 3. `source env/bin/activate`
 4. `pip3 install -r requirements.txt`
