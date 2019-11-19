@@ -34,6 +34,32 @@ class flooding:
 				break
 
 
+	# takes a user as input
+	# bans the user
+	def ban_user(self, user):
+		try:
+			self.subreddit.banned.add(user, ban_reason=config.ban_reason)
+		except Exception as e:
+			print(e.response.content)
+			pass
+
+
+	# takes submission id as input
+	# removes the submission
+	def remove_submission(self, sm_id):
+		try:
+			self.reddit.submission(sm_id).mod.remove()
+		except Exception as e:
+			print(e.response.content)
+			pass
+
+
+	# accesses user history and determines if queue flooder
+	def determine_qf(user):
+		self.reddit.redditor(user).submissions.new()
+		# still working here
+
+
 	# mainframe of k_flair_enforcer
 	def main(self):
 		self.modlog()
@@ -42,6 +68,9 @@ class flooding:
 		print('Found ' + str(len(self.flooders)) + ' AutoModerator actions.')
 		print('Removed ' + str(len(self.flooders)-len(unique_flood)) + ' duplicate users.')
 		print('Left with ' + str(len(unique_flood)) + ' possible queue flooders.')
+
+		for user in unique_flood:
+			self.determine_qf(user)
 
 
 if __name__ == '__main__':
