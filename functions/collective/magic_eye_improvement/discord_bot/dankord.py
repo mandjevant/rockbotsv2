@@ -51,7 +51,7 @@ async def reddit_stream():
 									embedb.set_footer(text="I'm a bot", icon_url="https://styles.redditmedia.com/t5_2zmfe/styles/communityIcon_d08xy4s3ol241.png")
 									embedb.set_image(url=repost_link)
 
-									ch = discord_client.get_channel(655095324863496279)
+									ch = discord_client.get_channel(config.discord_room)
 									await ch.send(content="Hey! I just found a possible Magic Eye mistake. Please check if this is a repost or not. \nIf this is a repost, cool. If it's not a repost, type `$revert` below.\n\n", embed=embeda)
 									await ch.send(embed=embedb)
 						else:
