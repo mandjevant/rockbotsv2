@@ -5,6 +5,7 @@ from bonk import bonkers
 import asyncio
 import discord
 import config
+import time
 import praw
 
 
@@ -126,7 +127,10 @@ async def on_message(message):
 			comments = submission.comments
 			for comment in comments:
 				if comment.author == 'MAGIC_EYE_BOT':
-					comment.reply("Whoops, bot made a mistake. I approved the submission and now it's back online.")
+					cm = comment.reply("Whoops, bot made a mistake. I approved the submission and now it's back online.")
+					cm.mod.approve()
+					cm.mod.distinguish(how='yes')
+					cm.mod.ignore_reports()
 					comment.mod.remove()
 					break
 				else:
